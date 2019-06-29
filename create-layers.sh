@@ -20,7 +20,7 @@ do
     if [ "$workspace" ]
     then
         # creates a workspace if doesn't exist
-        workspaceUrl="$host"'/geoserver/rest/workspaces'
+        workspaceUrl="$protocol""$host"'/geoserver/rest/workspaces'
         
         if [ "$debug" ]
         then
@@ -32,13 +32,13 @@ do
     if [ "$datastore" ]
     then
         # string with datastore's parameters in XML
-        xmlDatastore='<dataStore><name>'"$datastore"'</name><type>PostGIS</type><enabled>true</enabled><workspace><name>'"$workspace"'</name><atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="alternate" href="'"$host"'/geoserver/rest/workspaces/'"$workspace"'.xml" type="application/xml"/></workspace><connectionParameters><entry key="port">'"$port"'</entry><entry key="user">'"$dbUser"'</entry><entry key="passwd">'"$dbPassword"'</entry><entry key="dbtype">postgis</entry><entry key="host">'"$dbHost"'</entry><entry key="database">'"$database"'</entry><entry key="schema">'"$schema"'</entry></connectionParameters><__default>false</__default></dataStore>'
+        xmlDatastore='<dataStore><name>'"$datastore"'</name><type>PostGIS</type><enabled>true</enabled><workspace><name>'"$workspace"'</name><atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="alternate" href="'"$protocol""$host"'/geoserver/rest/workspaces/'"$workspace"'.xml" type="application/xml"/></workspace><connectionParameters><entry key="port">'"$port"'</entry><entry key="user">'"$dbUser"'</entry><entry key="passwd">'"$dbPassword"'</entry><entry key="dbtype">postgis</entry><entry key="host">'"$dbHost"'</entry><entry key="database">'"$database"'</entry><entry key="schema">'"$schema"'</entry></connectionParameters><__default>false</__default></dataStore>'
         
         # stores the XML in a temporary file
         echo $xmlDatastore > "$workDir""$datastore".xml
         
         # creates a datastore if doesn't exist (with a database connection)
-        dataStoreUrl="$host"'/geoserver/rest/workspaces/'"$workspace"'/datastores.xml'
+        dataStoreUrl="$protocol""$host"'/geoserver/rest/workspaces/'"$workspace"'/datastores.xml'
         
         if [ "$debug" ]
         then
@@ -48,7 +48,7 @@ do
     fi
     
     # makes an URL for sending the request with the arguments in config file
-    restFeatureUrl="$host"'/geoserver/rest/workspaces/'"$workspace"'/datastores/'"$datastore"'/featuretypes'
+    restFeatureUrl="$protocol""$host"'/geoserver/rest/workspaces/'"$workspace"'/datastores/'"$datastore"'/featuretypes'
     
     ## Layers creation, it evaluates if a filter will be applied
     

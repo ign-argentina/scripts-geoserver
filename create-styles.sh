@@ -13,8 +13,8 @@ mkdir -p $dataDir
 stylesDir='data/'"$host"'/styles/'
 
 # makes an URL for sending requests
-restUrl="$host"'/geoserver/rest/styles/'
-restSourceUrl="$host"'/geoserver/rest/source/styles/'
+restUrl="$protocol""$host"'/geoserver/rest/styles/'
+restSourceUrl="$protocol""$host"'/geoserver/rest/source/styles/'
 
 # Read features in a list and requests layer (SQL view) creation by REST for each one
 
@@ -29,8 +29,8 @@ do
     if [ ! -z "$workspace" ]
     then
         xmlWorkspace='<workspace><name>'"$workspace"'</name></workspace>'
-		restUrl="$host"'/geoserver/rest/workspaces/'"$workspace"'/styles/'
-		restSourceUrl="$host"'/geoserver/rest/resource/workspaces/'"$workspace"'/styles/'
+		restUrl="$protocol""$host"'/geoserver/rest/workspaces/'"$workspace"'/styles/'
+		restSourceUrl="$protocol""$host"'/geoserver/rest/resource/workspaces/'"$workspace"'/styles/'
     else
         xmlWorkspace=''
     fi
