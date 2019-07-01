@@ -31,6 +31,7 @@ do
         xmlWorkspace='<workspace><name>'"$workspace"'</name></workspace>'
 		restUrl="$protocol""$host"'/geoserver/rest/workspaces/'"$workspace"'/styles/'
 		restSourceUrl="$protocol""$host"'/geoserver/rest/resource/workspaces/'"$workspace"'/styles/'
+		stylesDir='data/'"$host"'/styles/'"$workspace"'/'
     else
         xmlWorkspace=''
     fi
@@ -44,13 +45,13 @@ do
 	curl -v -u $gsUser -XPOST -H 'Content-type: text/xml' -d "$xmlStyle" "$restUrl"
 
 	# SLD uploading
-	curl -v -u $gsUser -XPUT -H 'Content-type: application/vnd.ogc.se+xml' -d @"$stylesDir""$workspace"'/'"$file"'.sld' "$restUrl""$file"
+	curl -v -u $gsUser -XPUT -H 'Content-type: application/vnd.ogc.se+xml' -d @"$stylesDir""$file"'.sld' "$restUrl""$file"
 
 	IFS=',' read -r -a array <<< "$resources"
 	for resource in "${array[@]}"; do
 		echo 'Uploading resource '"$resource"' in workspace '"$workspace"'\n'
 		# Upload style's resources
-		curl -v -u $gsUser -XPUT -H 'Content-type: image/svg+xml' -d @"$stylesDir""$workspace"'/'"$resource" "$restSourceUrl""$resource"
+		curl -v -u $gsUser -XPUT -H 'Content-type: image/svg+xml' -d @"$stylesDir""$resource" "$restSourceUrl""$resource"
 	done
 
 	resources=''
