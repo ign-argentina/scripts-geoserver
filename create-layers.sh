@@ -13,7 +13,7 @@ mkdir -p $dataDir
 
 # Read features in a list and requests layer (SQL view) creation by REST for each one
 
-while IFS=';' read -r workspace datastore schema table layerNamePrefix layerName layerTitle keywords srs filterField filterValue fields abstract style endLine
+while IFS=';' read -r workspace datastore schema table layerNamePrefix layerName layerTitle keywords srs keyColumn filterField filterValue fields abstract style endLine
 do
     workDir="$dataDir""$workspace"'/'
     mkdir -p $workDir
@@ -68,6 +68,14 @@ do
     else
         xmlKeywordsString=''
     fi
+
+    # adds primary key column xml if not empty
+    if [ ! -z "$keyColumn" ]
+    then
+        xmlKeyColumn='<keyColumn>'"$keyColumn"'</keyColumn>'
+    else
+        xmlKeyColumn=''
+    fi
     
     if [ -z "$filterValue" ]
     then
@@ -78,8 +86,8 @@ do
         echo $xmlLayer > "$workDir""$layerName".xml
     else
         xmlBeginString='<featureType><name>'"$layerNamePrefix""$layerName"'</name><nativeName>'"$layerName"'</nativeName><title>'"$layerTitle"'</title>'"$xmlAbstractString""$xmlKeywordsString"'<enabled>true</enabled><srs>EPSG:'"$srs"'</srs><metadata><entry key="cachingEnabled">false</entry><entry key="JDBC_VIRTUAL_TABLE"><virtualTable><name>'"$layerNamePrefix""$layerName"'</name><sql>select '
-        
-        xmlEndString='</sql><escapeSql>false</escapeSql><geometry><name>geom</name><type>Geometry</type><srid>'"$srs"'</srid></geometry></virtualTable></entry></metadata></featureType>'
+
+        xmlEndString='</sql><escapeSql>false</escapeSql>'"$xmlKeyColumn"'<geometry><name>geom</name><type>Geometry</type><srid>'"$srs"'</srid></geometry></virtualTable></entry></metadata></featureType>'
 
         if [ "$filterValue" = "null" ]
         then
