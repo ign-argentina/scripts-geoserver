@@ -12,7 +12,7 @@ dataDir='data/'"$host"'/layergroups/'"$date"'/'
 mkdir -p $dataDir
 
 # makes an URL for sending requests
-restUrl="$protocol""$host"'/geoserver/rest/'
+restUrl="$protocol""$host"':'"$port"'/geoserver/rest/'
 
 # Read features in a list and requests layer (SQL view) creation by REST for each one
 
