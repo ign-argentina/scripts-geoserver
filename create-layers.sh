@@ -89,9 +89,9 @@ do
 
         xmlEndString='</sql><escapeSql>false</escapeSql>'"$xmlKeyColumn"'<geometry><name>geom</name><type>Geometry</type><srid>'"$srs"'</srid></geometry></virtualTable></entry></metadata></featureType>'
 
-        if [ "$filterValue" = "null" ]
+        if [ -z "$filterField" ]
         then
-            whereString=''
+            whereString=' where '"$filterValue"
         else
             whereString=' where '"$filterField"'=&apos;'"$filterValue"'&apos;'
         fi
