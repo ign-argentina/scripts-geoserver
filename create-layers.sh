@@ -13,7 +13,7 @@ mkdir -p $dataDir
 
 # Read features in a list and requests layer (SQL view) creation by REST for each one
 
-while IFS=';' read -r workspace datastore schema table layerNamePrefix layerName layerTitle keywords srs keyColumn filterField filterValue fields abstract style endLine
+while IFS=';' read -r workspace datastore schema table layerNamePrefix layerName layerTitle keywords advertised srs keyColumn filterField filterValue fields abstract style endLine
 do
     workDir="$dataDir""$workspace"'/'
     mkdir -p $workDir
@@ -76,16 +76,24 @@ do
     else
         xmlKeyColumn=''
     fi
+	
+	# indicates if layer is advertised or not
+	if [ -z "$advertised" ]
+	then
+		xmlAdvertised='';
+	else
+		xmlAdvertised='<advertised>'"$xmlAdvertised"'</advertised>';
+	fi
     
     if [ -z "$filterValue" ]
     then
         # string with layer's parameters in XML
-        xmlLayer='<featureType><name>'"$layerNamePrefix""$layerName"'</name><nativeName>'"$table"'</nativeName><title>'"$layerTitle"'</title>'"$xmlAbstractString""$xmlKeywordsString"'<enabled>true</enabled><srs>EPSG:'"$srs"'</srs></featureType>' # this was deprecated since if is needed to publish a layer (table) with a different name, GeoServer doesn't have a way to determine which table is as it uses the layer name to find the table.
+        xmlLayer='<featureType><name>'"$layerNamePrefix""$layerName"'</name><nativeName>'"$table"'</nativeName><title>'"$layerTitle"'</title>'"$xmlAbstractString""$xmlKeywordsString"'<enabled>true</enabled>'"$xmlAdvertised"'<srs>EPSG:'"$srs"'</srs></featureType>' # this was deprecated since if is needed to publish a layer (table) with a different name, GeoServer doesn't have a way to determine which table is as it uses the layer name to find the table.
         #xmlLayer="$xmlBeginString"'&#42; from '"$schema"'.'"$table""$xmlEndString"
         # stores the XML in a temporary file
         echo $xmlLayer > "$workDir""$layerName".xml
     else
-        xmlBeginString='<featureType><name>'"$layerNamePrefix""$layerName"'</name><nativeName>'"$layerName"'</nativeName><title>'"$layerTitle"'</title>'"$xmlAbstractString""$xmlKeywordsString"'<enabled>true</enabled><srs>EPSG:'"$srs"'</srs><metadata><entry key="cachingEnabled">false</entry><entry key="JDBC_VIRTUAL_TABLE"><virtualTable><name>'"$layerNamePrefix""$layerName"'</name><sql>select '
+        xmlBeginString='<featureType><name>'"$layerNamePrefix""$layerName"'</name><nativeName>'"$layerName"'</nativeName><title>'"$layerTitle"'</title>'"$xmlAbstractString""$xmlKeywordsString"'<enabled>true</enabled>'"$xmlAdvertised"'<srs>EPSG:'"$srs"'</srs><metadata><entry key="cachingEnabled">false</entry><entry key="JDBC_VIRTUAL_TABLE"><virtualTable><name>'"$layerNamePrefix""$layerName"'</name><sql>select '
 
         xmlEndString='</sql><escapeSql>false</escapeSql>'"$xmlKeyColumn"'<geometry><name>geom</name><type>Geometry</type><srid>'"$srs"'</srid></geometry></virtualTable></entry></metadata></featureType>'
 
