@@ -45,7 +45,7 @@ do
 	curl -v -u $gsUser -XPOST -H 'Content-type: text/xml' -d "$xmlStyle" "$restUrl"
 
 	# SLD uploading
-	curl -v -u $gsUser -XPUT -H 'Content-type: application/vnd.ogc.se+xml' -d @"$stylesDir""$file"'.sld' "$restUrl""$file"
+	curl -v -u $gsUser -XPUT -H 'Content-type: application/vnd.ogc.se+xml' --data-binary @"$stylesDir""$file"'.sld' "$restUrl""$file"
 
 	IFS=',' read -r -a array <<< "$resources"
 	for resource in "${array[@]}"; do
