@@ -87,11 +87,18 @@ do
     
     if [ -z "$filterValue" ]
     then
-        # string with layer's parameters in XML
-        xmlLayer='<featureType><name>'"$layerNamePrefix""$layerName"'</name><nativeName>'"$table"'</nativeName><title>'"$layerTitle"'</title>'"$xmlAbstractString""$xmlKeywordsString"'<enabled>true</enabled>'"$xmlAdvertised"'<srs>EPSG:'"$srs"'</srs></featureType>' # this was deprecated since if is needed to publish a layer (table) with a different name, GeoServer doesn't have a way to determine which table is as it uses the layer name to find the table.
-        #xmlLayer="$xmlBeginString"'&#42; from '"$schema"'.'"$table""$xmlEndString"
-        # stores the XML in a temporary file
+        
+		if [ -z "$fields" ]
+		then
+            xmlLayer='<featureType><name>'"$layerNamePrefix""$layerName"'</name><nativeName>'"$table"'</nativeName><title>'"$layerTitle"'</title>'"$xmlAbstractString""$xmlKeywordsString"'<enabled>true</enabled>'"$xmlAdvertised"'<srs>EPSG:'"$srs"'</srs></featureType>' # this was deprecated since if is needed to publish a layer (table) with a different name, GeoServer doesn't have a way to determine which table is as it uses the layer name to find the table.
+        else
+            xmlBeginString='<featureType><name>'"$layerNamePrefix""$layerName"'</name><nativeName>'"$layerName"'</nativeName><title>'"$layerTitle"'</title>'"$xmlAbstractString""$xmlKeywordsString"'<enabled>true</enabled>'"$xmlAdvertised"'<srs>EPSG:'"$srs"'</srs><metadata><entry key="cachingEnabled">false</entry><entry key="JDBC_VIRTUAL_TABLE"><virtualTable><name>'"$layerNamePrefix""$layerName"'</name><sql>select '
+			xmlEndString='</sql><escapeSql>false</escapeSql>'"$xmlKeyColumn"'<geometry><name>geom</name><type>Geometry</type><srid>'"$srs"'</srid></geometry></virtualTable></entry></metadata></featureType>'
+			xmlLayer="$xmlBeginString""$fields"' from '"$schema"'.'"$table""$xmlEndString"
+        fi
+		# string with layer's parameters in XML
         echo $xmlLayer > "$workDir""$layerName".xml
+		
     else
         xmlBeginString='<featureType><name>'"$layerNamePrefix""$layerName"'</name><nativeName>'"$layerName"'</nativeName><title>'"$layerTitle"'</title>'"$xmlAbstractString""$xmlKeywordsString"'<enabled>true</enabled>'"$xmlAdvertised"'<srs>EPSG:'"$srs"'</srs><metadata><entry key="cachingEnabled">false</entry><entry key="JDBC_VIRTUAL_TABLE"><virtualTable><name>'"$layerNamePrefix""$layerName"'</name><sql>select '
 
