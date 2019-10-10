@@ -22,6 +22,11 @@ do
 	restUrl="$protocol""$host"':'"$port"'/geoserver/rest/layers/'
 	
 	curl -u $gsUser -X PUT -d '<layer><defaultStyle><name>'"$style"'</name></defaultStyle></layer>' -H "Content-Type: text/xml" "$restUrl"'/'"$workspace"':'"$layer"'.xml'
+	
+	if [ "$debug" ]
+    then
+        echo 'Vinculando estilo '"$style"' a la capa '"$workspace"':'"$layer"
+    fi
 
 done < $stylesLayers
 
