@@ -21,6 +21,11 @@ do
     then
         # creates a workspace if doesn't exist
         workspaceUrl="$protocol""$host"':'"$port"'/geoserver/rest/workspaces'
+		
+		if [ "$defaultWorkspace" == "$workspace" ]
+        then
+			workspaceUrl="$workspaceUrl"'?default=true'
+		fi
         
         if [ "$debug" ]
         then
