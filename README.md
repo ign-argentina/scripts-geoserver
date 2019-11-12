@@ -1,4 +1,4 @@
-# Scripts for automated layers, stiles and cache creation
+# Scripts for automated layers, styles and cache creation
 
 ## Layers and styles creation
 `create-layers.sh` creates in GeoServer a workspace and datastore from a conection to PostGIS using the parameters provided previuosly in the `config` file, also it use another file called `layersList.csv` where is required to define layers parameters as following, separated by semicolons:
@@ -35,9 +35,9 @@ Note that both CSV files must have a blank line at the end to avoid leaving the 
 ## Usage
 
 - Set needed parameters in config and CSV files
-- Run create-layers.sh
+- Run `create-layers.sh`
 - Check in Geoserver that layers are created and working as expected by layer preview or loading them in a desktop GIS
-- Run seed-layers.sh
+- Run `seed-layers.sh`
 - Check cache creation tasks in `http://<GeoServer Instance>:8080/geoserver/gwc/rest/seed.json`. If it returns `long-array-array	[]` that means that the tasks are done or never started, if returns arrays with numbers means that GeoWebCache is running tasks.
 
 ## Misc
