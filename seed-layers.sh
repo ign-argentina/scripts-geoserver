@@ -12,7 +12,7 @@ dataDir='data/'"$host"'/cache/'"$date"'/'
 mkdir -p $dataDir
 
 # makes an URL for sending the request with the arguments in config file
-baseSeedUrl='http://'"$host"'/geoserver/gwc/rest/seed/'
+baseSeedUrl="$protocol""$host"':'"$port"'/geoserver/gwc/rest/seed/'
 
 # Read a list and requests cache operations by REST for certain layers
 
