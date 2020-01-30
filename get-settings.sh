@@ -9,7 +9,7 @@ date=$(date +%F-%H_%M)
 dataDir='data/'"$host"'/settings/'"$date"'/'
 mkdir -p $dataDir
 
-restEndpoint='http://'"$host"'/geoserver/rest/'
+restEndpoint='http://'"$host"':'"$port"'/geoserver/rest/'
 
 settings='settings,workspaces,namespaces,styles,layers,layergroups,fonts,templates'
 
@@ -44,5 +44,5 @@ mkdir -p "$dataDir"'gwc'
 
 IFS=',' read -r -a array <<< "$gwc"
 for element in "${array[@]}"; do
-    curl -v -u $gsUser -XGET 'http://'"$host"'/geoserver/rest/'"$element"'.xml' -o "$dataDir"'gwc/'"$element"'.xml'
+    curl -v -u $gsUser -XGET 'http://'"$host"':'"$port"'/geoserver/rest/'"$element"'.xml' -o "$dataDir"'gwc/'"$element"'.xml'
 done

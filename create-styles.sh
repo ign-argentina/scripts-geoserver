@@ -13,8 +13,8 @@ mkdir -p $dataDir
 stylesDir='data/'"$host"'/styles/'
 
 # makes an URL for sending requests
-restUrl="$protocol""$host"'/geoserver/rest/styles/'
-restSourceUrl="$protocol""$host"'/geoserver/rest/source/styles/'
+restUrl="$protocol""$host"':'"$port"'/geoserver/rest/styles/'
+restSourceUrl="$protocol""$host"':'"$port"'/geoserver/rest/source/styles/'
 
 # Read features in a list and requests layer (SQL view) creation by REST for each one
 
@@ -29,8 +29,8 @@ do
     if [ ! -z "$workspace" ]
     then
         xmlWorkspace='<workspace><name>'"$workspace"'</name></workspace>'
-		restUrl="$protocol""$host"'/geoserver/rest/workspaces/'"$workspace"'/styles/'
-		restSourceUrl="$protocol""$host"'/geoserver/rest/resource/workspaces/'"$workspace"'/styles/'
+		restUrl="$protocol""$host"':'"$port"'/geoserver/rest/workspaces/'"$workspace"'/styles/'
+		restSourceUrl="$protocol""$host"':'"$port"'/geoserver/rest/resource/workspaces/'"$workspace"'/styles/'
 		stylesDir='data/'"$host"'/styles/'"$workspace"'/'
     else
         xmlWorkspace=''
@@ -45,7 +45,7 @@ do
 	curl -v -u $gsUser -XPOST -H 'Content-type: text/xml' -d "$xmlStyle" "$restUrl"
 
 	# SLD uploading
-	curl -v -u $gsUser -XPUT -H 'Content-type: application/vnd.ogc.se+xml' -d @"$stylesDir""$file"'.sld' "$restUrl""$file"
+	curl -v -u $gsUser -XPUT -H 'Content-type: application/vnd.ogc.se+xml' --data-binary @"$stylesDir""$file"'.sld' "$restUrl""$file"
 
 	IFS=',' read -r -a array <<< "$resources"
 	for resource in "${array[@]}"; do
