@@ -7,7 +7,8 @@ A set of scripts files, written in bash, for automated layers, styles, groups an
   - Prepare scripts, data files and directories
   - Edit config file (`config.sh`)
   - Execute the scripts in this order:
-  	- `create-layers.sh` to add layers in Geoserver
+  	- `create-layers.sh` to add vector layers in Geoserver
+  	- `create-raster-layers.sh` to add raster layers in Geoserver
   	- `create-styles.sh` to add styles in Geoserver
   	- `set-styles.sh` to assign existing style to existing layer
   	- `create-layers-groups.sh` to add groups to Geoserver using layers and styles created
@@ -28,6 +29,7 @@ These parameters are:
 - host: host name or IP address used by Geoserver Web API (e.g. '127.0.0.1')
 - gsUser: Geoserver Web API user and password (e.g. 'admin:geoserver')
 - layersList: CSV file that contains the necessary data for the script `create-layers.sh` (e.g. 'data/layers.csv')
+- rasterLayersList: CSV file that contains the necessary data for the script `create-raster-layers.sh` (e.g. 'data/raster-layers.csv')
 - stylesList: CSV file that contains the necessary data for the script `create-styles.sh` (e.g. 'data/styles.csv')
 - stylesLayers: CSV file that contains the necessary data for the script `set-styles.sh` (e.g. 'data/layers-styles.csv')
 - groupsList: CSV file that contains the necessary data for the script `create-layers-groups.sh` (e.g. 'data/groups.csv')
@@ -80,6 +82,38 @@ IMPORTANT: Note that CSV files must have a blank line at the end to avoid leavin
 
 The script creates a new directory whose name matches the `host` parameter indicated in the configuration file within the `data` directory. Log files will be created within this directory to visualize the xml files generated in the process.
 
+## `create-raster-layers.sh` script
+
+Create workspaces, data stores and layers indicated in the csv data file (in `rasterLayersList` configuration parameter) in geoserver.
+The rasterLayersList csv file indicates the data required for execution separated by semicolons. Its structure is:
+
+```
+workspace;datastore;dataType;filePath;fileName;layerName;layerTitle;srs;
+
+```
+
+### Structure explanation
+
+- workspace: (REQUIERED) workspace name to be created in Geoserver
+- datastore: (REQUIERED) datastore name to be created in Geoserver
+- dataType: (REQUIERED) raster format type, accepted formats are GeoTIFF and ImageMosaic
+- filePath: (REQUIERED) path of the directory where is the raster file(s)
+- fileName: filename of the raster file, required for GeoTIFF format, not required for ImageMosaic
+- layerName: (REQUIRED) layer unique name
+- layerTitle: (REQUIERED) layer title
+- srs: (REQUIERED) layer coordinate reference system
+
+### Example
+
+```
+ign;ds_ign;GeoTIFF;file:uploads/;buenos-aires.tif;buenos-aires;Buenos Aires;4326;
+ign;ds_ign;ImageMosaic;file:uploads/;;buenos-aires-mosaic;Buenos Aires Mosaic;4326;
+
+```
+
+IMPORTANT: Note that CSV files must have a blank line at the end to avoid leaving the last data line without reading it.
+
+The script creates a new directory whose name matches the `host` parameter indicated in the configuration file within the `data` directory. Log files will be created within this directory to visualize the xml files generated in the process.
 
 ## `create-styles.sh` script
 
