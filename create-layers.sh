@@ -69,7 +69,13 @@ do
     # adds keywords xml tag if not empty
     if [ ! -z "$keywords" ]
     then
-        xmlKeywordsString='<keywords><string>'"$keywords"'</string></keywords>'
+        IFS=', ' read -r -a kwArray <<< "$keywords"
+        for element in "${kwArray[@]}"
+        do
+            KEYWORD+='<string>'"$element"'</string>'
+        done
+        xmlKeywordsString='<keywords>'"$KEYWORD"'</keywords>'
+        KEYWORD=''
     else
         xmlKeywordsString=''
     fi
