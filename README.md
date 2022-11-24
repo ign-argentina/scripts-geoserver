@@ -8,6 +8,7 @@ A set of scripts files, written in bash, for automated layers, styles, groups an
   - Edit config file (`config.sh`)
   - Execute the scripts in this order:
   	- `create-layers.sh` to add vector layers in Geoserver
+    - `create-wms-layers.sh` to add WMS layers in Geoserver
   	- `create-raster-layers.sh` to add raster layers in Geoserver
   	- `create-styles.sh` to add styles in Geoserver
   	- `set-styles.sh` to assign existing style to existing layer
