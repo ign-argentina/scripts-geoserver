@@ -92,7 +92,7 @@ do
         xmlAdvertised='<advertised>'"$xmlAdvertised"'</advertised>';
     fi
         
-    xmlLayer='<wmsLayer><name>'"$layerNamePrefix""$layerName"'</name><nativeName>'"$layerName"'</nativeName><title>'"$layerTitle"'</title>'"$xmlAbstractString""$xmlKeywordsString"'<enabled>true</enabled>'"$xmlAdvertised"'<srs>EPSG:'"$srs"'</srs></wmsLayer>' # this was deprecated since if is needed to publish a layer (table) with a different name, GeoServer doesn't have a way to determine which table is as it uses the layer name to find the table.
+    xmlLayer='<wmsLayer><name>'"$layerNamePrefix""$layerName"'</name><nativeName>'"$layerName"'</nativeName><title>'"$layerTitle"'</title>'"$xmlAbstractString""$xmlKeywordsString"'<enabled>true</enabled>'"$xmlAdvertised"'<nativeCRS>EPSG:'"$srs"'</nativeCRS><srs>EPSG:'"$srs"'</srs></wmsLayer>' # this was deprecated since if is needed to publish a layer (table) with a different name, GeoServer doesn't have a way to determine which table is as it uses the layer name to find the table.
     
     # string with layer's parameters in XML
     echo $xmlLayer > "$workDir""$layerName".xml
